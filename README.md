@@ -23,6 +23,19 @@ La deteccion temprana de personas con mayor riesgo puede apoyar decisiones preve
 - Fuente principal (Kaggle): [Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset)
 - Archivo crudo usado en el repositorio: `data/raw/healthcare-dataset-stroke-data.csv`
 
+### Variables (features) del dataset
+- `gender`: genero del paciente (`Male`, `Female`, `Other`).
+- `age`: edad en anios.
+- `hypertension`: presencia de hipertension (`0` no, `1` si).
+- `heart_disease`: presencia de enfermedad cardiaca (`0` no, `1` si).
+- `ever_married`: si estuvo casado alguna vez (`Yes`/`No`).
+- `work_type`: tipo de trabajo (`Private`, `Self-employed`, `Govt_job`, `children`, `Never_worked`).
+- `Residence_type`: zona de residencia (`Urban` o `Rural`).
+- `avg_glucose_level`: nivel promedio de glucosa.
+- `bmi`: indice de masa corporal.
+- `smoking_status`: habito de fumador (`never smoked`, `formerly smoked`, `smokes`, `Unknown`).
+- `stroke` (target): variable objetivo (`0` no ACV, `1` ACV).
+
 ## B) Preparacion del proyecto
 
 - Repositorio publico en GitHub clonado localmente.
@@ -52,6 +65,14 @@ Metricas actuales (conjunto de prueba):
 - Recall: `0.8000`
 - F1-score: `0.2353`
 - ROC-AUC: `0.8437`
+
+### Resultados de prediccion (ejemplo de inferencia)
+- Caso de prueba usado en la API:
+  - edad `67`, hipertension `1`, glucosa `228.69`, IMC `36.6`, exfumador.
+- Respuesta del servicio:
+  - `prediction = 1`
+  - `stroke_risk_probability = 0.872199`
+- Interpretacion: el modelo asigna una probabilidad alta de riesgo para un perfil con varios factores asociados.
 
 ## D) Actividades de desarrollo ML
 
@@ -121,12 +142,45 @@ python experiments/run_experiments.py
 python -m pytest tests/test_serving.py -q
 ```
 
+## Conclusiones
+
+El flujo completo se pudo implementar de forma estable: desde adquisicion de datos, preparacion, entrenamiento y evaluacion, hasta el despliegue de un endpoint de prediccion. Se logro una buena capacidad de discriminacion del modelo (ROC-AUC de `0.8437`) y un recall alto en la clase positiva (`0.8000`), que en este contexto es valioso porque prioriza detectar casos de mayor riesgo.
+
+## Insights obtenidos
+
+- El dataset esta claramente desbalanceado, por eso se uso `class_weight=\"balanced\"`.
+- La variable `bmi` concentra los valores faltantes, lo que justifico imputacion por mediana.
+- El modelo de Regresion Logistica rindio mejor en ROC-AUC que RandomForest para este conjunto y configuracion.
+- La API de inferencia permite cerrar el ciclo MLOps y mostrar uso practico del modelo.
+
+## Limitaciones
+
+- El dataset tiene tamano moderado y no representa toda la complejidad clinica real.
+- La precision es baja en la clase positiva, por lo que habria falsos positivos.
+- No se incorporaron variables clinicas adicionales (antecedentes mas detallados, examenes especializados, etc.).
+- Este trabajo es academico y no debe usarse como sistema de diagnostico medico.
+
+## Mejoras futuras
+
+- Probar tecnicas de balanceo como SMOTE o ajuste de umbral de decision.
+- Hacer busqueda de hiperparametros sistematica y validacion cruzada.
+- Incorporar trazabilidad de experimentos con MLflow.
+- Agregar despliegue con contenedor Docker y pipeline CI/CD.
+- Incluir monitoreo de drift y reentrenamiento periodico.
+
+## Lecciones aprendidas
+
+- Una buena estructura de repositorio facilita el trabajo y la evaluacion.
+- Separar scripts de preparacion, entrenamiento y serving mejora mantenibilidad.
+- Documentar cada etapa evita vacios al momento de la entrega final.
+- Probar la API con casos reales da evidencia clara de funcionamiento end-to-end.
+
 ## F) Checklist de entrega
 
 - [x] Repositorio publico con codigo, dataset, scripts y reportes.
 - [x] Etapas del ciclo ML cubiertas desde datos hasta inferencia.
 - [x] Modelo serializado y servido por API REST.
 - [x] README usado como documentacion central.
-- [ ] Crear Pull Request de `dev/final-project` a `main`.
+- [x] Crear Pull Request de `dev/final-project` a `main`.
 - [ ] Enviar URL del repositorio en el formulario del curso.
 
