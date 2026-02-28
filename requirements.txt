@@ -1,2 +1,8 @@
-# put here the libraries your project depends on
-# e.g.: Flask, scikit-learn, etc.
+pandas>=2.2.0
+scikit-learn>=1.4.0
+joblib>=1.4.0
+fastapi>=0.110.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+kagglehub>=0.3.0
+pytest>=8.2.0
