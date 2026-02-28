@@ -175,12 +175,5 @@ El flujo completo se pudo implementar de forma estable: desde adquisicion de dat
 - Documentar cada etapa evita vacios al momento de la entrega final.
 - Probar la API con casos reales da evidencia clara de funcionamiento end-to-end.
 
-## F) Checklist de entrega
 
-- [x] Repositorio publico con codigo, dataset, scripts y reportes.
-- [x] Etapas del ciclo ML cubiertas desde datos hasta inferencia.
-- [x] Modelo serializado y servido por API REST.
-- [x] README usado como documentacion central.
-- [x] Crear Pull Request de `dev/final-project` a `main`.
-- [ ] Enviar URL del repositorio en el formulario del curso.
 
